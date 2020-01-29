@@ -5,7 +5,6 @@
  */
 package com.laundry.ui;
 
-import static com.laundry.code.Laundry.connectToDatabase;
 import static com.laundry.code.Laundry.verifikasiPassword;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -180,9 +179,7 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        connectToDatabase();
-//        Laundry laundry = new Laundry();
-//        laundry.verifikasiPasswordAdmin();
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

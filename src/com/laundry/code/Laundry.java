@@ -6,7 +6,6 @@
 package com.laundry.code;
 
 import static com.laundry.code.PasswordFieldToMD5.digest;
-import static com.laundry.code.PasswordFieldToMD5.getSalt;
 import static com.laundry.code.PasswordFieldToMD5.hexStringToByteArray;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -56,7 +55,6 @@ public class Laundry {
                 }
             }      
         });
-//        byte [] salt = getSalt();
         
         String [] options = new String [] {"    OK    ", "Cancel"};
         int option = JOptionPane.showOptionDialog(null, panel, "Verifikasi Password Admin", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[1]);
@@ -64,8 +62,6 @@ public class Laundry {
         {
             char [] passwordAdminChar = passwordAdmin.getPassword();
             String usernameAdmin = "IndraSudirman";
-//            String passwordOne = "bfcc83ec6203141323a6e2f392edb73d";
-//            String passwordTwo = "9d54178d6411bb0c0f7c787a8304df0b";
             try {
              ConnectionDatabase connectionDatabase = new ConnectionDatabase();
              connectionDatabase.connect();
@@ -80,74 +76,25 @@ public class Laundry {
                  String passwordTwo = resultSet.getString(2);
                  System.out.println("Password One is " + passwordOne);
                  System.out.println("Password Two is " + passwordTwo);
-//                 PasswordFieldToMD5 = passwordFieldToMD5 = new PasswordFieldToMD5();
+//                 
                  byte [] saltKey = hexStringToByteArray(passwordTwo);
                  String passwordReal = digest(passwordAdminChar, saltKey);
                  if (passwordReal.equals(passwordOne)) {
-                     System.out.println("Password matched");
-                     System.out.println("Password real is " + passwordReal);
+                     JOptionPane.showMessageDialog(null, "Password benar!");
                  } else {
-                     System.out.println("Password doesn't match");
+                     JOptionPane.showMessageDialog(null, "Password salah!");
                  }
              }
              resultSet.close();
              
-             
-             
             } catch (SQLException e) {
                 System.out.println("Error " + e);
             }
-//            Laundry laundry = new Laundry();
-//            laundry.verifikasiPasswordAdmin(); 
-//            char [] passwordAdminChar = passwordAdmin.getPassword();
-//            String passwordAdminInHash = digest(passwordAdminChar, salt);
-//            System.out.println("Password in hash MD5 + Salt is : "  + passwordAdminInHash);
         }
     }
-    public static void connectToDatabase() {
-//        ConnectionDatabase connectionDatabase = new ConnectionDatabase();
-//        connectionDatabase.connectDatabase();
-    }
-    public void verifikasiPasswordAdmin() {
-        
-        String userNameAdmin, passwordAdmin;
-        userNameAdmin = "IndraSudirman";
-        passwordAdmin = null;
-        
-        try {
-            ConnectionDatabase connectionDatabase = new ConnectionDatabase();
-            connectionDatabase.statement = connectionDatabase.connection.createStatement();
-            String sqlQuery = "SELECT * FROM users WHERE username = ?";
-//            preparedStatement = connection.prepareStatement(sqlQuery);
-//            preparedStatement.setString(1, userNameAdmin);
-            resultSet = statement.executeQuery(sqlQuery);
-            
-            if (resultSet.next()) {
-                System.out.println("Nama username Admin " + userNameAdmin + " terdapat didatabase");
-            } else {
-                System.out.println("Username salah " );
-            }
-            
-//            connectionDatabase.statement = connectionDatabase.connection.createStatement();
-//            String sqlQuery = "SELECT * FROM users WHERE USERNAME = ?";// AND PASSWORD = ?";
-//            preparedStatement = connection.prepareStatement(sqlQuery);
-//            preparedStatement.setString(1, userNameAdmin);
-////            preparedStatement.setString(2, passwordAdmin);
-//            resultSet = preparedStatement.executeQuery();
-//            
-//            if (resultSet.next()) {
-//                System.out.println("Nama username Admin " + userNameAdmin + " terdapat didatabase");
-                
-            
-            
-        } catch (SQLException e) {
-            System.out.println("Password Admin salah : " + e);
-        
-        }
-        
-    }
-    
 }
+
+
 
 
 
