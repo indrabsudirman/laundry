@@ -7,6 +7,7 @@ package com.laundry.code;
 
 import static com.laundry.code.PasswordFieldToMD5.digest;
 import static com.laundry.code.PasswordFieldToMD5.hexStringToByteArray;
+import com.laundry.ui.Login;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.security.NoSuchAlgorithmException;
@@ -37,6 +38,10 @@ public class Laundry {
     static ResultSet resultSet;
     Statement statement;
     static PreparedStatement preparedStatement;
+    
+    public static void main (String [] args) {
+        new Login().setVisible(true);
+    }
     
     public static void verifikasiPassword() throws NoSuchAlgorithmException, NoSuchProviderException {
         Laundry laundry = new Laundry();
