@@ -5,6 +5,7 @@
  */
 package com.laundry.ui;
 
+import com.laundry.code.Laundry;
 import static com.laundry.code.Laundry.verifikasiPassword;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -22,10 +23,7 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         initComponents();
-        
-       
-        
-        
+
     }
 
     /**
@@ -191,7 +189,7 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel3MouseEntered
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
-        boolean flag = false;
+        
         try {
             verifikasiPassword();
         } catch (NoSuchAlgorithmException ex) {
@@ -199,6 +197,14 @@ public class Login extends javax.swing.JFrame {
         } catch (NoSuchProviderException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+        boolean passwordAdminPassed = Laundry.getPasswordAdminPassed(); 
+        System.out.println(passwordAdminPassed + "login menu");
+        if (passwordAdminPassed) {
+            new SignUp().setVisible(true);
+            this.dispose();
+        } 
+  
     }//GEN-LAST:event_jLabel3MouseClicked
 
     /**

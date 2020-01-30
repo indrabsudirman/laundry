@@ -28,6 +28,9 @@ import javax.swing.JPasswordField;
  */
 public class Laundry {
     
+    private static boolean passwordAdminPassed ;
+
+    
     
     ConnectionDatabase connectionDatabase;// = new ConnectionDatabase();
     Connection connection;
@@ -36,6 +39,7 @@ public class Laundry {
     static PreparedStatement preparedStatement;
     
     public static void verifikasiPassword() throws NoSuchAlgorithmException, NoSuchProviderException {
+        Laundry laundry = new Laundry();
         JPanel panel = new JPanel();
         JLabel label = new JLabel();
         final JPasswordField passwordAdmin = new JPasswordField(15);
@@ -76,13 +80,18 @@ public class Laundry {
                  String passwordTwo = resultSet.getString(2);
                  System.out.println("Password One is " + passwordOne);
                  System.out.println("Password Two is " + passwordTwo);
-//                 
+                 
                  byte [] saltKey = hexStringToByteArray(passwordTwo);
                  String passwordReal = digest(passwordAdminChar, saltKey);
                  if (passwordReal.equals(passwordOne)) {
                      JOptionPane.showMessageDialog(null, "Password benar!", "Benar", JOptionPane.INFORMATION_MESSAGE);
+                     
+                     laundry.setPasswordAdminPassed(true);
+
+                     System.out.println(Laundry.getPasswordAdminPassed() + "password true");
                  } else {
                      JOptionPane.showMessageDialog(null, "Password salah!", "Salah", JOptionPane.INFORMATION_MESSAGE);
+                     System.out.println(Laundry.getPasswordAdminPassed());
                  }
              }
              resultSet.close();
@@ -92,13 +101,14 @@ public class Laundry {
             }
         }
     }
+
+   
+    
+    public static boolean getPasswordAdminPassed() {
+        return passwordAdminPassed;
+    }
+
+    public void setPasswordAdminPassed(boolean passwordAdminPassed) {
+        Laundry.passwordAdminPassed = passwordAdminPassed;
+    }
 }
-
-
-
-
-
-
-
-
-
