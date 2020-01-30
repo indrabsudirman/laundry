@@ -80,15 +80,15 @@ public class Laundry {
                  byte [] saltKey = hexStringToByteArray(passwordTwo);
                  String passwordReal = digest(passwordAdminChar, saltKey);
                  if (passwordReal.equals(passwordOne)) {
-                     JOptionPane.showMessageDialog(null, "Password benar!");
+                     JOptionPane.showMessageDialog(null, "Password benar!", "Benar", JOptionPane.INFORMATION_MESSAGE);
                  } else {
-                     JOptionPane.showMessageDialog(null, "Password salah!");
+                     JOptionPane.showMessageDialog(null, "Password salah!", "Salah", JOptionPane.INFORMATION_MESSAGE);
                  }
              }
              resultSet.close();
              
             } catch (SQLException e) {
-                System.out.println("Error " + e);
+                JOptionPane.showMessageDialog(null, "Error " + e, "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }

@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -32,7 +33,8 @@ public class ConnectionDatabase {
             connection = DriverManager.getConnection(url, "root", "");
             System.out.println("Berhasil koneksi database");
         } catch (SQLException e) {
-            System.out.println("Gagal koneksi database " + e);
+            JOptionPane.showMessageDialog(null, "Gagal koneksi database " + e, "Error", JOptionPane.ERROR_MESSAGE);
+//            System.out.println("Gagal koneksi database " + e);
         }
         return connection;
     }
