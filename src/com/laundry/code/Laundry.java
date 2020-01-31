@@ -8,6 +8,8 @@ package com.laundry.code;
 import static com.laundry.code.PasswordFieldToMD5.digest;
 import static com.laundry.code.PasswordFieldToMD5.hexStringToByteArray;
 import com.laundry.ui.Login;
+import static com.laundry.ui.Login.jPasswordField1;
+import static com.laundry.ui.Login.jTextField1;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.security.NoSuchAlgorithmException;
@@ -32,12 +34,12 @@ public class Laundry {
     private static boolean passwordAdminPassed ;
 
     
-    
-    ConnectionDatabase connectionDatabase;// = new ConnectionDatabase();
+    ConnectionDatabase connectionDatabase = new ConnectionDatabase();
     Connection connection;
     static ResultSet resultSet;
     Statement statement;
     static PreparedStatement preparedStatement;
+    String passwordOneDB, passwordTwoDB;
     
     public static void main (String [] args) {
         new Login().setVisible(true);
@@ -106,6 +108,36 @@ public class Laundry {
             }
         }
     }
+    
+    public void login() {
+        String username;
+        char [] password;
+        username = jTextField1.getText();
+        password = jPasswordField1.getPassword();
+        
+        try {
+            connectionDatabase.connect();
+            connectionDatabase.statement = connectionDatabase.connection.createStatement();
+            String sqlQuery = "SELECT `username`, `passwordOne`, `passwordTwo` FROM `users` WHERE username = ?";
+            preparedStatement = connectionDatabase.connection.prepareStatement(sqlQuery);
+            preparedStatement.setString(1, username);
+            resultSet = preparedStatement.executeQuery();
+            
+            if (resultSet.next()) {
+                username = resultSet.getString(1);
+                passwordOneDB = resultSet.getString(2);
+                passwordTwoDB = resultSet.getString(3);
+                System.out.println(username);
+                System.out.println(passwordOneDB);
+                System.out.println(passwordTwoDB);
+                
+            } else {
+                JOptionPane.showMessageDialog(null, "Username salah!", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error " + e, "Error", JOptionPane.ERROR_MESSAGE);            
+        }
+    }
 
    
     
@@ -117,3 +149,10 @@ public class Laundry {
         Laundry.passwordAdminPassed = passwordAdminPassed;
     }
 }
+
+
+
+
+
+
+
