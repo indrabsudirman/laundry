@@ -195,8 +195,12 @@ public class Login extends javax.swing.JFrame {
         else if (jPasswordField1.getPassword().length == 0) {
             JOptionPane.showMessageDialog(null, "Password belum diisi!", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
-            Laundry laundry = new Laundry();
-            laundry.login();
+            try {
+                Laundry laundry = new Laundry();
+                laundry.login();
+            } catch (NoSuchAlgorithmException ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

@@ -31,7 +31,7 @@ import javax.swing.JPasswordField;
  */
 public class Laundry {
     
-    private static boolean passwordAdminPassed ;
+    private static boolean passwordAdminPassed = false;
 
     
     ConnectionDatabase connectionDatabase = new ConnectionDatabase();
@@ -39,7 +39,7 @@ public class Laundry {
     static ResultSet resultSet;
     Statement statement;
     static PreparedStatement preparedStatement;
-    String passwordOneDB, passwordTwoDB;
+    String passwordOneDB, passwordTwoDB, passwordUser;
     
     public static void main (String [] args) {
         new Login().setVisible(true);
@@ -109,7 +109,7 @@ public class Laundry {
         }
     }
     
-    public void login() {
+    public void login() throws NoSuchAlgorithmException {
         String username;
         char [] password;
         username = jTextField1.getText();
@@ -131,6 +131,19 @@ public class Laundry {
                 System.out.println(passwordOneDB);
                 System.out.println(passwordTwoDB);
                 
+                byte [] salt = hexStringToByteArray(passwordTwoDB);
+                passwordUser = digest(password, salt);
+                if (passwordUser.equals(passwordOneDB)) {
+                    JOptionPane.showMessageDialog(null, "Password benar!", "Benar", JOptionPane.INFORMATION_MESSAGE);                    
+                    Laundry laundry = new Laundry();
+                    System.out.println("Nilai 1 "+Laundry.getPasswordAdminPassed());
+                    laundry.setPasswordAdminPassed(true);
+                    System.out.println("Nilai 2 " + Laundry.getPasswordAdminPassed());
+                }else {
+                    JOptionPane.showMessageDialog(null, "Password salah!", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                     
+                
             } else {
                 JOptionPane.showMessageDialog(null, "Username salah!", "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -149,6 +162,11 @@ public class Laundry {
         Laundry.passwordAdminPassed = passwordAdminPassed;
     }
 }
+
+
+
+
+
 
 
 
