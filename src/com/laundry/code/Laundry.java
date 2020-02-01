@@ -141,6 +141,10 @@ public class Laundry {
                     System.out.println("Nilai 2 " + Laundry.getPasswordAdminPassed());
                 }else {
                     JOptionPane.showMessageDialog(null, "Password salah!", "Error", JOptionPane.ERROR_MESSAGE);
+                    Laundry laundry = new Laundry();
+                    System.out.println("Password User salah sebelum diset false " + Laundry.getPasswordAdminPassed());
+                    laundry.setPasswordAdminPassed(false);
+                    System.out.println("Password User salah " + Laundry.getPasswordAdminPassed());
                 }
                      
                 

@@ -198,6 +198,12 @@ public class Login extends javax.swing.JFrame {
             try {
                 Laundry laundry = new Laundry();
                 laundry.login();
+                boolean passwordAdminPassed = Laundry.getPasswordAdminPassed();
+                System.out.println("Password User dari getPassword di login " + passwordAdminPassed);
+                if (passwordAdminPassed) {
+                    JOptionPane.showMessageDialog(null, "Password benar masuk ke Menu Utama ", "Menu Utama", JOptionPane.INFORMATION_MESSAGE);
+                }
+//                boolean passwordAdminPassed = getPass
             } catch (NoSuchAlgorithmException ex) {
                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
