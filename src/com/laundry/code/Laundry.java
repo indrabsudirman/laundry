@@ -5,11 +5,14 @@
  */
 package com.laundry.code;
 
+import static com.laundry.code.PasswordFieldToMD5.byteArrayToHexString;
 import static com.laundry.code.PasswordFieldToMD5.digest;
+import static com.laundry.code.PasswordFieldToMD5.getSalt;
 import static com.laundry.code.PasswordFieldToMD5.hexStringToByteArray;
 import com.laundry.ui.Login;
 import static com.laundry.ui.Login.jPasswordField1;
 import static com.laundry.ui.Login.jTextField1;
+import com.laundry.ui.SignUp;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.security.NoSuchAlgorithmException;
@@ -86,20 +89,14 @@ public class Laundry {
              if (resultSet.next()) {
                  String passwordOne = resultSet.getString(1);
                  String passwordTwo = resultSet.getString(2);
-                 System.out.println("Password One is " + passwordOne);
-                 System.out.println("Password Two is " + passwordTwo);
                  
                  byte [] saltKey = hexStringToByteArray(passwordTwo);
                  String passwordReal = digest(passwordAdminChar, saltKey);
                  if (passwordReal.equals(passwordOne)) {
-                     JOptionPane.showMessageDialog(null, "Password benar!", "Benar", JOptionPane.INFORMATION_MESSAGE);
-                     
+                     JOptionPane.showMessageDialog(null, "Password benar!", "Benar", JOptionPane.INFORMATION_MESSAGE);                     
                      laundry.setPasswordAdminPassed(true);
-
-                     System.out.println(Laundry.getPasswordAdminPassed() + "password true");
                  } else {
                      JOptionPane.showMessageDialog(null, "Password salah!", "Salah", JOptionPane.INFORMATION_MESSAGE);
-                     System.out.println(Laundry.getPasswordAdminPassed());
                  }
              }
              resultSet.close();
@@ -118,7 +115,7 @@ public class Laundry {
         
         try {
             connectionDatabase.connect();
-            connectionDatabase.statement = connectionDatabase.connection.createStatement();
+//            connectionDatabase.statement = connectionDatabase.connection.createStatement();
             String sqlQuery = "SELECT `username`, `passwordOne`, `passwordTwo` FROM `users` WHERE username = ?";
             preparedStatement = connectionDatabase.connection.prepareStatement(sqlQuery);
             preparedStatement.setString(1, usernameJTextField);
@@ -128,25 +125,17 @@ public class Laundry {
                 usernameToDatabase = resultSet.getString(1);
                 passwordOneDB = resultSet.getString(2);
                 passwordTwoDB = resultSet.getString(3);
-                System.out.println("usernameJTextField "+usernameJTextField);
-                System.out.println("usernameToDatabase "+usernameToDatabase);
-                System.out.println(passwordOneDB);
-                System.out.println(passwordTwoDB);
                 if (usernameJTextField.equals(usernameToDatabase)) {
                     byte [] salt = hexStringToByteArray(passwordTwoDB);
                     passwordUser = digest(password, salt);
                     if (passwordUser.equals(passwordOneDB)) {
                         JOptionPane.showMessageDialog(null, "Password benar!", "Benar", JOptionPane.INFORMATION_MESSAGE);                    
                         Laundry laundry = new Laundry();
-                        System.out.println("Nilai 1 "+Laundry.getPasswordAdminPassed());
                         laundry.setPasswordAdminPassed(true);
-                        System.out.println("Nilai 2 " + Laundry.getPasswordAdminPassed());
                     }else {
                         JOptionPane.showMessageDialog(null, "Password salah!", "Error", JOptionPane.ERROR_MESSAGE);
                         Laundry laundry = new Laundry();
-                        System.out.println("Password User salah sebelum diset false " + Laundry.getPasswordAdminPassed());
                         laundry.setPasswordAdminPassed(false);
-                        System.out.println("Password User salah " + Laundry.getPasswordAdminPassed());
                     }
                 
                 } else {
@@ -159,19 +148,37 @@ public class Laundry {
             jTextField1.setText(""); 
             Arrays.fill(password, '0');
             System.out.println("Arrays Fill" + Arrays.toString(password));
-//            jPasswordField1.selectAll();
-//            jPasswordField1.resetKeyboardActions();
+            jPasswordField1.setText("");
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error " + e, "Error", JOptionPane.ERROR_MESSAGE);            
         }
     }
-
-   
+    
+    public void signUp() throws NoSuchAlgorithmException, NoSuchProviderException {
+        String userNameSignUp;
+        char [] passwordTwoSignUp;
+        userNameSignUp = SignUp.jTextField1.getText();
+        passwordTwoSignUp = SignUp.passwordUser;
+        try {
+            byte [] salt = getSalt();
+            String passwordOne = byteArrayToHexString(salt);
+            String passwordTwo = digest(passwordTwoSignUp, salt);
+            connectionDatabase.connect();
+            String sqlQuery = "INSERT INTO users (username, passwordOne, passwordTwo) VALUES (?, ?, ?)";
+            preparedStatement = connectionDatabase.connection.prepareStatement(sqlQuery);
+            preparedStatement.setString(1, userNameSignUp);
+            preparedStatement.setString(2, passwordTwo);
+            preparedStatement.setString(3, passwordOne);
+            preparedStatement.execute();
+            JOptionPane.showMessageDialog(null, "User baru berhasil dibuat!", "Berhasil", JOptionPane.INFORMATION_MESSAGE);                    
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error " + e, "Error", JOptionPane.ERROR_MESSAGE);
+        }        
+    }   
     
     public static boolean getPasswordAdminPassed() {
         return passwordAdminPassed;
     }
-
     public void setPasswordAdminPassed(boolean passwordAdminPassed) {
         Laundry.passwordAdminPassed = passwordAdminPassed;
     }

@@ -5,11 +5,24 @@
  */
 package com.laundry.ui;
 
+import com.laundry.code.Laundry;
+import static java.awt.Color.blue;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
+import javax.swing.border.Border;
+
 /**
  *
  * @author Jabrikos
  */
 public class SignUp extends javax.swing.JFrame {
+
+    public static char[] passwordUser;
 
     /**
      * Creates new form SignUp
@@ -38,6 +51,7 @@ public class SignUp extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -56,6 +70,11 @@ public class SignUp extends javax.swing.JFrame {
         jLabel3.setText("Ulangi Password");
 
         jButton1.setText("Daftar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Batal");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -65,6 +84,22 @@ public class SignUp extends javax.swing.JFrame {
         });
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/laundry/image/laundryImage.png"))); // NOI18N
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(0, 0, 255));
+        jLabel5.setText("<html> Kembali ke Login</html>");
+        jLabel5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel5MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel5MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel5MouseExited(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -87,7 +122,10 @@ public class SignUp extends javax.swing.JFrame {
                         .addGap(48, 48, 48)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(108, 108, 108)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(125, 125, 125)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 83, Short.MAX_VALUE)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30))
@@ -111,7 +149,9 @@ public class SignUp extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(54, 54, 54))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE)
@@ -159,6 +199,63 @@ public class SignUp extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        if (jTextField1.getText().isEmpty() && jPasswordField1.getPassword().length == 0 && jPasswordField2.getPassword().length == 0) {
+            JOptionPane.showMessageDialog(null, "Username, Password dan Ulangi Password harus diisi!", "Error", JOptionPane.ERROR_MESSAGE);     
+        } else if (jPasswordField1.getPassword().length == 0 && jPasswordField2.getPassword().length == 0) {
+            JOptionPane.showMessageDialog(null, "Password dan Ulangi Password harus diisi!", "Error", JOptionPane.ERROR_MESSAGE);
+        } else if (jTextField1.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Username harus diisi!", "Error", JOptionPane.ERROR_MESSAGE);
+        } else if (jPasswordField1.getPassword().length == 0) {
+            JOptionPane.showMessageDialog(null, "Password harus diisi!", "Error", JOptionPane.ERROR_MESSAGE);
+        } else if (jPasswordField2.getPassword().length == 0) {
+            JOptionPane.showMessageDialog(null, "Ulangi Password harus diisi!", "Error", JOptionPane.ERROR_MESSAGE);
+        } else if (jTextField1.getText().length() <= 5) {
+            JOptionPane.showMessageDialog(null, "Username terlalu pendek!", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            if (Arrays.equals(jPasswordField1.getPassword(), jPasswordField2.getPassword())) {
+                if (jPasswordField1.getPassword().length <= 5 && jPasswordField2.getPassword().length <= 5) {
+                    JOptionPane.showMessageDialog(null, "Password terlalu pendek!", "Error", JOptionPane.ERROR_MESSAGE);                
+                } else {
+                    passwordUser = jPasswordField1.getPassword();
+                    
+                    try { 
+                        Laundry laundry = new Laundry();
+                        laundry.signUp();
+                    } catch (NoSuchAlgorithmException ex) {
+                        Logger.getLogger(SignUp.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (NoSuchProviderException ex) {
+                        Logger.getLogger(SignUp.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }                
+            } else {
+                JOptionPane.showMessageDialog(null, "Password dan Ulangi Password tidak sama!", "Error", JOptionPane.ERROR_MESSAGE);            
+            }
+        }
+        jTextField1.setText("");
+        jPasswordField1.setText("");
+        jPasswordField2.setText("");
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jLabel5MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseEntered
+        // TODO add your handling code here:
+        Border labelBorder = BorderFactory.createMatteBorder(0, 0, 1, 0, blue);
+        jLabel5.setBorder(labelBorder);
+    }//GEN-LAST:event_jLabel5MouseEntered
+
+    private void jLabel5MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseExited
+        // TODO add your handling code here:
+        jLabel5.setBorder(null);
+    }//GEN-LAST:event_jLabel5MouseExited
+
+    private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
+        // TODO add your handling code here:
+        new Login().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel5MouseClicked
+    
     /**
      * @param args the command line arguments
      */
@@ -202,11 +299,12 @@ public class SignUp extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JPasswordField jPasswordField2;
-    private javax.swing.JTextField jTextField1;
+    public static javax.swing.JPasswordField jPasswordField1;
+    public static javax.swing.JPasswordField jPasswordField2;
+    public static javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }

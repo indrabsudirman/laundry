@@ -14,20 +14,20 @@ import java.util.Arrays;
 
 public class PasswordFieldToMD5 {
 
-//    public static void main(String[] args) throws NoSuchAlgorithmException, NoSuchProviderException { 
-//                   
-//        char[] password ={ 'l', 'a', 'u', 'n', 'd', 'r', 'i', 'k', 'u'};
+    public static void main(String[] args) throws NoSuchAlgorithmException, NoSuchProviderException { 
+                   
+//        char[] password ={ 'J', 'a', 'b', 'r', 'i', 'k', 'o', '8', '9'};
 //        byte [] salt = getSalt();
 //        String saltInHex = byteArrayToHexString (salt);
-//        byte [] saltTwo = hexStringToByteArray(saltInHex);
+//        byte [] saltTwo = hexStringToByteArray("04b36c3bb8aa3d1371ba772d359cfadc");
 //        
-//        String passwordMD5WithSalt = digest (password, salt);
+//        String passwordMD5WithSalt = digest (password, saltTwo);
 //        System.out.println("Your plaintext password is : " + new String(password));
 //        System.out.println("Your password MD5 with salt is : " + passwordMD5WithSalt);
 //        System.out.println("Nilai salt adalah : " +saltInHex);
 //        System.out.println("Nilai salt dalam byte adalah : " +Arrays.toString(saltTwo));
 //
-//    }
+    }
     
     public static String digest (char [] in, byte[] salt) throws NoSuchAlgorithmException {
         MessageDigest messageDigest = MessageDigest.getInstance("MD5");

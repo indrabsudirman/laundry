@@ -67,7 +67,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Cancel");
+        jButton2.setText("Clear");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -199,11 +199,10 @@ public class Login extends javax.swing.JFrame {
                 Laundry laundry = new Laundry();
                 laundry.login();
                 boolean passwordAdminPassed = Laundry.getPasswordAdminPassed();
-                System.out.println("Password User dari getPassword di login " + passwordAdminPassed);
                 if (passwordAdminPassed) {
                     JOptionPane.showMessageDialog(null, "Password benar masuk ke Menu Utama ", "Menu Utama", JOptionPane.INFORMATION_MESSAGE);
                 }
-//                boolean passwordAdminPassed = getPass
+                laundry.setPasswordAdminPassed(false); 
             } catch (NoSuchAlgorithmException ex) {
                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -212,6 +211,8 @@ public class Login extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        jTextField1.setText("");
+        jPasswordField1.setText("");
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jLabel3MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseEntered
@@ -235,7 +236,9 @@ public class Login extends javax.swing.JFrame {
         if (passwordAdminPassed) {
             new SignUp().setVisible(true);
             this.dispose();
-        } 
+        }
+        Laundry laundry = new Laundry();
+        laundry.setPasswordAdminPassed(false);
   
     }//GEN-LAST:event_jLabel3MouseClicked
 
