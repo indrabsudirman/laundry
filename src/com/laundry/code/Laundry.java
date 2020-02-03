@@ -19,6 +19,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -110,9 +111,9 @@ public class Laundry {
     }
     
     public void login() throws NoSuchAlgorithmException {
-        String username;
+        String usernameJTextField, usernameToDatabase;
         char [] password;
-        username = jTextField1.getText();
+        usernameJTextField = jTextField1.getText();
         password = jPasswordField1.getPassword();
         
         try {
@@ -120,37 +121,46 @@ public class Laundry {
             connectionDatabase.statement = connectionDatabase.connection.createStatement();
             String sqlQuery = "SELECT `username`, `passwordOne`, `passwordTwo` FROM `users` WHERE username = ?";
             preparedStatement = connectionDatabase.connection.prepareStatement(sqlQuery);
-            preparedStatement.setString(1, username);
+            preparedStatement.setString(1, usernameJTextField);
             resultSet = preparedStatement.executeQuery();
             
             if (resultSet.next()) {
-                username = resultSet.getString(1);
+                usernameToDatabase = resultSet.getString(1);
                 passwordOneDB = resultSet.getString(2);
                 passwordTwoDB = resultSet.getString(3);
-                System.out.println(username);
+                System.out.println("usernameJTextField "+usernameJTextField);
+                System.out.println("usernameToDatabase "+usernameToDatabase);
                 System.out.println(passwordOneDB);
                 System.out.println(passwordTwoDB);
+                if (usernameJTextField.equals(usernameToDatabase)) {
+                    byte [] salt = hexStringToByteArray(passwordTwoDB);
+                    passwordUser = digest(password, salt);
+                    if (passwordUser.equals(passwordOneDB)) {
+                        JOptionPane.showMessageDialog(null, "Password benar!", "Benar", JOptionPane.INFORMATION_MESSAGE);                    
+                        Laundry laundry = new Laundry();
+                        System.out.println("Nilai 1 "+Laundry.getPasswordAdminPassed());
+                        laundry.setPasswordAdminPassed(true);
+                        System.out.println("Nilai 2 " + Laundry.getPasswordAdminPassed());
+                    }else {
+                        JOptionPane.showMessageDialog(null, "Password salah!", "Error", JOptionPane.ERROR_MESSAGE);
+                        Laundry laundry = new Laundry();
+                        System.out.println("Password User salah sebelum diset false " + Laundry.getPasswordAdminPassed());
+                        laundry.setPasswordAdminPassed(false);
+                        System.out.println("Password User salah " + Laundry.getPasswordAdminPassed());
+                    }
                 
-                byte [] salt = hexStringToByteArray(passwordTwoDB);
-                passwordUser = digest(password, salt);
-                if (passwordUser.equals(passwordOneDB)) {
-                    JOptionPane.showMessageDialog(null, "Password benar!", "Benar", JOptionPane.INFORMATION_MESSAGE);                    
-                    Laundry laundry = new Laundry();
-                    System.out.println("Nilai 1 "+Laundry.getPasswordAdminPassed());
-                    laundry.setPasswordAdminPassed(true);
-                    System.out.println("Nilai 2 " + Laundry.getPasswordAdminPassed());
-                }else {
-                    JOptionPane.showMessageDialog(null, "Password salah!", "Error", JOptionPane.ERROR_MESSAGE);
-                    Laundry laundry = new Laundry();
-                    System.out.println("Password User salah sebelum diset false " + Laundry.getPasswordAdminPassed());
-                    laundry.setPasswordAdminPassed(false);
-                    System.out.println("Password User salah " + Laundry.getPasswordAdminPassed());
-                }
-                     
+                } else {
+                    JOptionPane.showMessageDialog(null, "Username salah!", "Error", JOptionPane.ERROR_MESSAGE);
+                }   
                 
             } else {
                 JOptionPane.showMessageDialog(null, "Username salah!", "Error", JOptionPane.ERROR_MESSAGE);
             }
+            jTextField1.setText(""); 
+            Arrays.fill(password, '0');
+            System.out.println("Arrays Fill" + Arrays.toString(password));
+//            jPasswordField1.selectAll();
+//            jPasswordField1.resetKeyboardActions();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error " + e, "Error", JOptionPane.ERROR_MESSAGE);            
         }
@@ -166,6 +176,20 @@ public class Laundry {
         Laundry.passwordAdminPassed = passwordAdminPassed;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
